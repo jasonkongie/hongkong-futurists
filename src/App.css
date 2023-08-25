@@ -1,3 +1,10 @@
+body {
+  margin: 0;
+  font-family: 'Cormorant Garamond', serif;
+  background-color: black;
+  color: white;
+}
+
 .App {
   text-align: center;
 }

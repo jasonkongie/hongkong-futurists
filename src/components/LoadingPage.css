@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
+
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: black; 
+  z-index: 9999;
+}
+
+.loading-element {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem; 
+  font-weight: 700; 
+  color: white;
+}
