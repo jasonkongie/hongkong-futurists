@@ -69,23 +69,32 @@ function ApplicationPage() {
 
   return (
     <div className="application-container">
-      <h2>Application for HK Future Leaders Organization</h2>
-
-      <button onClick={signInWithGoogle}>Sign in with Google</button>
-
-      <form className="application-form" onSubmit={handleSubmit}>
-        <label>
-          Full Name:
-          <input type="text" name="name" value={formValue.name} onChange={e => setFormValue({ ...formValue, name: e.target.value })} required />
-        </label>
-        <label>
-          Email Address:
-          <input type="email" name="email" value={formValue.email} onChange={e => setFormValue({ ...formValue, email: e.target.value })} required />
-        </label>
-        <input type="submit" value="Submit Application" />
+      <h2 className="application-header">Application for HK Future Leaders Organization</h2>
+    
+      <form className="application-form">
+        <input 
+          name="name" 
+          type="text" 
+          className="feedback-input" 
+          placeholder="Full Name" 
+          value={formValue.name} 
+          onChange={e => setFormValue({ ...formValue, name: e.target.value })} 
+          required 
+        />
+        <input 
+          name="email" 
+          type="email" 
+          className="feedback-input" 
+          placeholder="Email Address" 
+          value={formValue.email} 
+          onChange={e => setFormValue({ ...formValue, email: e.target.value })} 
+          required 
+        />
+        <input type="submit" value="Submit Application" className="feedback-submit"/>
       </form>
     </div>
   );
+  
 }
 
 export default ApplicationPage;

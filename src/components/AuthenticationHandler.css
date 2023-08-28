@@ -1,0 +1,29 @@
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* This assumes you want the typing effect and button to be centered vertically */
+  }
+  
+  .loading-element {
+    margin-bottom: 20px; /* This will create space between the typing effect and the button */
+  }
+  
+  button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007BFF; /* Choose your preferred color */
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  
+    /* Optional: Add some hover effect */
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
