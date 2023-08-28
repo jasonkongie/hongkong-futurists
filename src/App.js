@@ -1,26 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './components/firebase';
-import ApplicationPage from './components/ApplicationPage';
-import SignIn from './components/SignIn';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import AuthenticationHandler from './components/AuthenticationHandler';
+import HomePage from './components/HomePage';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    // Listen for authentication state changes
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setIsAuthenticated(!!user);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  if (isAuthenticated) {
-    return <ApplicationPage />;
-  } else {
-    return <SignIn onAuthenticated={() => setIsAuthenticated(true)} />;
-  }
+  return (
+    <Router>
+      <Routes>
+        <Route path="/applications" element={<AuthenticationHandler />} />
+        <Route path="/" element={<HomePage />} />
+      </Routes>
+    </Router>
+  );
 }
 
 export default App;

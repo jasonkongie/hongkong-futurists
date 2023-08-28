@@ -1,73 +1,64 @@
 #!/bin/bash
 
-# setup.sh
+# Check if react-router-dom is installed
+if ! npm list react-router-dom; then
+    echo "Installing react-router-dom..."
+    npm install react-router-dom
+fi
 
-# Create directory structure
-echo "Creating directory structure..."
-mkdir -p src/components
-
-# Firebase setup
-echo "Setting up Firebase configuration..."
-cat > src/firebase.js <<EOL
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-
-const firebaseConfig = {
-    // Your firebase config object
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-export { auth, db };
-EOL
-
-# UserProfile setup
-echo "Setting up UserProfile component..."
-cat > src/components/UserProfile.js <<EOL
+# Create AuthenticationHandler.js in the components directory
+cat <<EOL > ./components/AuthenticationHandler.js
 import React, { useState, useEffect } from 'react';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { db, auth } from '../firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './firebase';
+import ApplicationPage from './ApplicationPage';
+import SignIn from './SignIn';
 
-function UserProfile() {
-    const [user, setUser] = useState(null);
-    const [profileData, setProfileData] = useState({ name: '', bio: '' });
+function AuthenticationHandler() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    useEffect(() => {
-        const fetchProfile = async () => {
-            const userProfile = await getDoc(doc(db, 'users', auth.currentUser.uid));
-            if (userProfile.exists()) {
-                setProfileData(userProfile.data());
-            }
-        };
-        fetchProfile();
-    }, []);
+  useEffect(() => {
+    // Listen for authentication state changes
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsAuthenticated(!!user);
+    });
 
-    const saveProfile = async () => {
-        await setDoc(doc(db, 'users', auth.currentUser.uid), profileData);
-        alert('Profile saved!');
-    };
+    return () => unsubscribe();
+  }, []);
 
-    return (
-        <div>
-            <input 
-                value={profileData.name} 
-                onChange={e => setProfileData({ ...profileData, name: e.target.value })}
-                placeholder="Name"
-            />
-            <textarea 
-                value={profileData.bio} 
-                onChange={e => setProfileData({ ...profileData, bio: e.target.value })}
-                placeholder="Bio"
-            />
-            <button onClick={saveProfile}>Save</button>
-        </div>
-    );
+  if (isAuthenticated) {
+    return <ApplicationPage />;
+  } else {
+    return <SignIn onAuthenticated={() => setIsAuthenticated(true)} />;
+  }
 }
 
-export default UserProfile;
+export default AuthenticationHandler;
 EOL
 
-echo "Setup completed!"
+# Update App.js for routing
+cat <<EOL > ./App.js
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import AuthenticationHandler from './components/AuthenticationHandler';
+import ApplicationPage from './components/ApplicationPage';
+
+function App() {
+  return (
+    <Router>
+      <Switch>
+        <Route path="/applications">
+          <ApplicationPage />
+        </Route>
+        <Route path="/">
+          <AuthenticationHandler />
+        </Route>
+      </Switch>
+    </Router>
+  );
+}
+
+export default App;
+EOL
+
+echo "Setup complete. Please check your files for the changes."
