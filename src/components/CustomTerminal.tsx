@@ -49,16 +49,26 @@ function CustomTerminal() {
       if (isCurrentQuestionIntegerType) {
         const intValue = parseInt(input, 10);
         if (intValue >= 1 && intValue <= 10) {
-          await pushToHistory(<div>{currentQuestion}<br/>Answer: {intValue}</div>);
+          await pushToHistory(
+            <div>
+              <strong style={{ color: 'cyan' }}>{currentQuestion}</strong><br/>
+              <span style={{ color: 'yellow', marginLeft: 10 }}>Answer:</span> <strong style={{ color: 'lime' }}>{intValue}</strong>
+            </div>
+          );
           setCurrentQuestionIndex(current => current + 1);
         } else {
-          await pushToHistory(<div>Invalid input. Please provide an integer between 1 and 10.</div>);
+          await pushToHistory(<div style={{ color: 'red' }}>Invalid input. Please provide an integer between 1 and 10.</div>);
         }
       } else {
-        await pushToHistory(<div>{currentQuestion}<br/>Answer: {input}</div>);
+        await pushToHistory(
+          <div>
+            <strong style={{ color: 'cyan' }}>{currentQuestion}</strong><br/>
+            <span style={{ color: 'yellow', marginLeft: 10 }}>Answer:</span> <strong style={{ color: 'lime' }}>{input}</strong>
+          </div>
+        );
         setCurrentQuestionIndex(current => current + 1);
       }
-      
+          
       // Check if all questions are answered
       if (currentQuestionIndex === questions.length - 1) {
         await pushToHistory(<button onClick={() => alert("Application Submitted!")}>Submit Application</button>);
