@@ -10,7 +10,6 @@ function CustomTerminal() {
     resetTerminal,
   } = useTerminal();
 
-  // Questions to ask the user.
   const questions = [
     "On a scale of 1 to 10, how important is continuous learning in your profession?",
     "How often, on a scale from 1 (never) to 10 (always), do you seek feedback on your work?",
@@ -23,7 +22,7 @@ function CustomTerminal() {
   ];
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const isCurrentQuestionIntegerType = currentQuestionIndex < 5; // First 5 questions are integer type.
+  const isCurrentQuestionIntegerType = currentQuestionIndex < 5;
 
   useEffect(() => {
     resetTerminal();
@@ -45,22 +44,27 @@ function CustomTerminal() {
       await pushToHistory(<div><strong>Alert</strong><span style={{ color: 'orange', marginLeft: 10 }}><strong>Shown in the browser</strong></span></div>);
     },
     'answer': async (input) => {
+      const currentQuestion = questions[currentQuestionIndex];
+      
       if (isCurrentQuestionIntegerType) {
         const intValue = parseInt(input, 10);
         if (intValue >= 1 && intValue <= 10) {
-          await pushToHistory(<div>Your answer {intValue} is saved!</div>);
+          await pushToHistory(<div>{currentQuestion}<br/>Answer: {intValue}</div>);
           setCurrentQuestionIndex(current => current + 1);
         } else {
           await pushToHistory(<div>Invalid input. Please provide an integer between 1 and 10.</div>);
         }
       } else {
-        // Handle short-answer questions here.
-        // For this example, just move to the next question.
-        await pushToHistory(<div>Your answer is saved!</div>);
+        await pushToHistory(<div>{currentQuestion}<br/>Answer: {input}</div>);
         setCurrentQuestionIndex(current => current + 1);
       }
+      
+      // Check if all questions are answered
+      if (currentQuestionIndex === questions.length - 1) {
+        await pushToHistory(<button onClick={() => alert("Application Submitted!")}>Submit Application</button>);
+      }
     },
-  }), [pushToHistory, isCurrentQuestionIntegerType]);
+  }), [pushToHistory, isCurrentQuestionIntegerType, currentQuestionIndex, questions]);
 
   return (
     <div className="CustomTerminal">

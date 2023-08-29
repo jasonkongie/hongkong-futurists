@@ -1,25 +1,18 @@
 import './terminal.css';
-import {ForwardedRef, forwardRef, useCallback, useEffect, useRef, useState} from "react";
-import {TerminalProps} from "./types";
-import React from 'react';
-
-
+import React, { ForwardedRef, forwardRef, useCallback, useEffect, useRef, useState } from 'react';
+import { TerminalProps } from "./types";
 
 export const Terminal = forwardRef(
   (props: TerminalProps, ref: ForwardedRef<HTMLDivElement>) => {
     const {
       history = [],
       promptLabel = '>',
-
       commands = {},
     } = props;
 
-    const inputRef = useRef<HTMLInputElement>();
+    const inputRef = useRef<HTMLInputElement>(null);
     const [input, setInputValue] = useState<string>('');
 
-    /**
-     * Focus on the input whenever we render the terminal or click in the terminal
-     */
     useEffect(() => {
       inputRef.current?.focus();
     });
@@ -28,10 +21,6 @@ export const Terminal = forwardRef(
       inputRef.current?.focus();
     }, []);
 
-
-    /**
-     * When user types something, we update the input value
-     */
     const handleInputChange = useCallback(
       (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);
@@ -39,15 +28,12 @@ export const Terminal = forwardRef(
       []
     );
 
-    /**
-     * When user presses enter, we execute the command
-     */
     const handleInputKeyDown = useCallback(
       (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-          const commandToExecute = commands?.[input.toLowerCase()];
+          const commandToExecute = commands?.answer; // Changed from input.toLowerCase() to 'answer'
           if (commandToExecute) {
-            commandToExecute?.();
+            commandToExecute(input); // Changed from commandToExecute?.() to commandToExecute(input)
           }
           setInputValue('');
         }
@@ -56,25 +42,26 @@ export const Terminal = forwardRef(
     );
 
     return (
-    <div className="terminal" ref={ref} onClick={focusInput}>
-      {history.map((line, index) => (
-        <div className="terminal__line" key={`terminal-line-${index}-${line}`}>
-          {line}
-        </div>
-      ))}
-      <div className="terminal__prompt">
-        <div className="terminal__prompt__label">{promptLabel}</div>
-        <div className="terminal__prompt__input">
-          <input
-            type="text"
-            value={input}
-            onKeyDown={handleInputKeyDown}
-            onChange={handleInputChange}
-            // @ts-ignore
-            ref={inputRef}
-          />
+      <div className="terminal" ref={ref} onClick={focusInput}>
+        {history.map((line, index) => (
+          <div className="terminal__line" key={`terminal-line-${index}-${line}`}>
+            {line}
+          </div>
+        ))}
+        <div className="terminal__prompt">
+          <div className="terminal__prompt__label">{promptLabel}</div>
+          <div className="terminal__prompt__input">
+            <input
+              type="text"
+              value={input}
+              onKeyDown={handleInputKeyDown}
+              onChange={handleInputChange}
+              ref={inputRef}
+            />
+          </div>
         </div>
       </div>
-    </div>
-  );
-});
+    );
+  }
+);
+
