@@ -1,7 +1,14 @@
 .terminal {
-    height: 500px;
+    /* Fullscreen dimensions */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    
+    height: 100vh; /* full viewport height */
     overflow-y: auto;
-    background-color: #3C3C3C;
+    background-color: #000; /* Changed to black */
     color: #C4C4C4;
     padding: 35px 45px;
     font-size: 14px;

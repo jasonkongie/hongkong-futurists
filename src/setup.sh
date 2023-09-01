@@ -1,64 +1,53 @@
 #!/bin/bash
 
-# Check if react-router-dom is installed
-if ! npm list react-router-dom; then
-    echo "Installing react-router-dom..."
-    npm install react-router-dom
+# Directory paths from the src directory
+COMPONENTS_DIR="./components"
+TERMINAL_DIR="./components/Terminal"
+
+# Check if the directories exist
+if [ ! -d "$COMPONENTS_DIR" ]; then
+    echo "$COMPONENTS_DIR does not exist. Exiting script."
+    exit 1
 fi
 
-# Create AuthenticationHandler.js in the components directory
-cat <<EOL > ./components/AuthenticationHandler.js
-import React, { useState, useEffect } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './firebase';
-import ApplicationPage from './ApplicationPage';
-import SignIn from './SignIn';
+if [ ! -d "$TERMINAL_DIR" ]; then
+    echo "$TERMINAL_DIR does not exist. Exiting script."
+    exit 1
+fi
 
-function AuthenticationHandler() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+# File creation and content pasting
 
-  useEffect(() => {
-    // Listen for authentication state changes
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setIsAuthenticated(!!user);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  if (isAuthenticated) {
-    return <ApplicationPage />;
-  } else {
-    return <SignIn onAuthenticated={() => setIsAuthenticated(true)} />;
-  }
-}
-
-export default AuthenticationHandler;
-EOL
-
-# Update App.js for routing
-cat <<EOL > ./App.js
+# ChatGPT.tsx in components directory
+FILE_PATH="$COMPONENTS_DIR/ChatGPT.tsx"
+if [ ! -f "$FILE_PATH" ]; then
+    cat > "$FILE_PATH" <<EOL
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import AuthenticationHandler from './components/AuthenticationHandler';
-import ApplicationPage from './components/ApplicationPage';
 
-function App() {
-  return (
-    <Router>
-      <Switch>
-        <Route path="/applications">
-          <ApplicationPage />
-        </Route>
-        <Route path="/">
-          <AuthenticationHandler />
-        </Route>
-      </Switch>
-    </Router>
-  );
+const ChatGPT = () => {
+    return (
+        <div>
+            This is the ChatGPT component.
+        </div>
+    );
 }
 
-export default App;
+export default ChatGPT;
 EOL
+    echo "File $FILE_PATH created."
+else
+    echo "File $FILE_PATH already exists."
+fi
 
-echo "Setup complete. Please check your files for the changes."
+# GPTStyles.css in components/Terminal directory
+FILE_PATH="$TERMINAL_DIR/GPTStyles.css"
+if [ ! -f "$FILE_PATH" ]; then
+    cat > "$FILE_PATH" <<EOL
+/* Add your CSS styles here */
+body {
+    background-color: black;
+}
+EOL
+    echo "File $FILE_PATH created."
+else
+    echo "File $FILE_PATH already exists."
+fi
