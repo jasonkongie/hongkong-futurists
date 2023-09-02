@@ -1,62 +1,65 @@
-import React, { useState } from 'react';
-import openai from 'openai';
+import React from 'react';
+import { OpenAI } from 'openai';
+
+const openaiInstance = new OpenAI({
+    apiKey: process.env.REACT_APP_OPENAI_API_KEY,
+    dangerouslyAllowBrowser: true
+});
 
 type Message = {
-  role: 'user' | 'assistant' | 'system';
-  content: string;
+    role: 'user' | 'assistant';
+    content: string;
 };
 
-const ChatGPT = () => {
-  const [conversationHistory, setConversationHistory] = useState<Message[]>([]);
-  const [inputValue, setInputValue] = useState<string>("");
+export const ask = async (userMessage: string, conversationHistory: Message[] = []) => {
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
-  };
-
-  const handleAsk = async () => {
-    // Update conversation history with user's question
-    setConversationHistory(prevHistory => [...prevHistory, { role: 'user', content: inputValue }]);
+    const conversationHistoryToUse = [
+        ...conversationHistory,
+        { role: 'user', content: userMessage }
+    ];
 
     try {
-      const gptResponse = await openai.createCompletion({
-        model: "text-davinci-002",
-        messages: conversationHistory
-      });
+        let gptResponse;
+        
+        if (openaiInstance.chat) {  // Using the hypothetical .chat method
+            gptResponse = await openaiInstance.chat({
+                model: "text-davinci-002",
+                messages: conversationHistoryToUse
+            });
+        } else {
+            throw new Error("Unsupported OpenAI SDK version. No recognized method available.");
+        }
 
-      const responseMessage = gptResponse.data.choices[0].message.content;
-
-      // Update conversation history with assistant's answer
-      setConversationHistory(prevHistory => [...prevHistory, { role: 'assistant', content: responseMessage }]);
+        const responseMessage = gptResponse.data.choices[0].message.content;
+        return responseMessage;
     } catch (error) {
-      // Handle any errors that arise during the API call
-      console.error("There was an error communicating with OpenAI:", error);
+        console.error("There was an error communicating with OpenAI:", error);
+        return "Sorry, I encountered an error.";
     }
+}
 
-    // Clear the input after asking
-    setInputValue("");
-  };
 
-  return (
-    <div>
-      <div className="chatHistory">
-        {conversationHistory.map((message, index) => (
-          <div key={index} className={`message ${message.role}`}>
-            <span>{message.role}: </span> {message.content}
-          </div>
-        ))}
-      </div>
-      <div className="inputArea">
-        <input
-          type="text"
-          value={inputValue}
-          onChange={handleInputChange}
-          placeholder="Ask something..."
-        />
-        <button onClick={handleAsk}>Ask</button>
-      </div>
-    </div>
-  );
-};
+const ChatGPT: React.FC = () => {
+    const [message, setMessage] = React.useState("");
+    const [response, setResponse] = React.useState("");
+
+    const handleSendMessage = async () => {
+        const gptResponse = await ask(message);
+        setResponse(gptResponse);
+    };
+
+    return (
+        <div>
+            <input 
+                type="text" 
+                value={message} 
+                onChange={e => setMessage(e.target.value)} 
+                placeholder="Ask me something" 
+            />
+            <button onClick={handleSendMessage}>Send</button>
+            <p>{response}</p>
+        </div>
+    );
+}
 
 export default ChatGPT;
