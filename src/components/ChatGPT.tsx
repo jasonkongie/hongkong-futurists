@@ -11,7 +11,11 @@ type Message = {
   content: string;
 };
 
-export const ask = async (userMessage: string, conversationHistory: Message[] = []) => {
+const initialMessages = [
+  { role: 'assistant', content: "Hello. I am the interviewer for the Hong Kong Futurists organization. What is your name?" }
+];
+
+export const ask = async (userMessage: string, conversationHistory: Message[] = initialMessages) => {
   const conversationHistoryToUse = [
     ...conversationHistory,
     { role: 'user', content: userMessage },
@@ -19,7 +23,7 @@ export const ask = async (userMessage: string, conversationHistory: Message[] = 
   
   try {
     const chatCompletion = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo', // Replace this with the actual GPT-4 chat model identifier
+      model: 'gpt-3.5-turbo', 
       messages: conversationHistoryToUse,
     });
 
@@ -39,7 +43,7 @@ export const ask = async (userMessage: string, conversationHistory: Message[] = 
 };
 
 const ChatGPT: React.FC = () => {
-  const [conversationHistory, setConversationHistory] = useState<Message[]>([]);
+  const [conversationHistory, setConversationHistory] = useState<Message[]>(initialMessages);
   
   const handleCommand = async (command: string) => {
     const response = await ask(command, conversationHistory);

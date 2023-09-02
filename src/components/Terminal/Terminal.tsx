@@ -15,7 +15,7 @@ export const Terminal = forwardRef(
 
     useEffect(() => {
       inputRef.current?.focus();
-    });
+    }, []);
 
     const focusInput = useCallback(() => {
       inputRef.current?.focus();
@@ -31,9 +31,9 @@ export const Terminal = forwardRef(
     const handleInputKeyDown = useCallback(
       (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-          const commandToExecute = commands?.answer; // Changed from input.toLowerCase() to 'answer'
+          const commandToExecute = commands?.answer;
           if (commandToExecute) {
-            commandToExecute(input); // Changed from commandToExecute?.() to commandToExecute(input)
+            commandToExecute(input);
           }
           setInputValue('');
         }
@@ -64,4 +64,3 @@ export const Terminal = forwardRef(
     );
   }
 );
-

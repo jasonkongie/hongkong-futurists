@@ -53,3 +53,17 @@
     font-family: 'IBM Plex Mono', Consolas, Menlo, Monaco, 'Courier New', Courier,
     monospace;
 }
+
+/* Added color classes for different roles */
+
+.terminal__system {
+    color: #FF4500; /* System messages in orange */
+}
+
+.terminal__assistant {
+    color: #00FF00; /* Assistant messages in green */
+}
+
+.terminal__user {
+    color: #1E90FF; /* User messages in blue */
+}
