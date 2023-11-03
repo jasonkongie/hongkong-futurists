@@ -5,7 +5,7 @@ module.exports = (req, res) => {
       res.status(200).send('Webhook received');
     } else {
       // Handle any other HTTP method
-      res.status(405).send('Method Not Allowed');
+      res.status(405).send('Method Not ?? Allowed');
     }
   };
   
