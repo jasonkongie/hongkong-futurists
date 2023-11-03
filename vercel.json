@@ -3,7 +3,7 @@
     "routes": [
       {
         "src": "/api/profile",
-        "methods": ["GET", "POST"],
+        "methods": ["POST", "GET"],
         "dest": "/api/profile.js"
       }
     ]
