@@ -1,0 +1,49 @@
+.directory-container {
+    background-color: #000000;
+    color: #ffffff;
+    padding: 20px;
+    max-width: 800px;
+    margin: 50px auto;
+    border-radius: 8px;
+  }
+  
+  .directory-container h1 {
+    color: #ff2800;
+  }
+  
+  .directory-container form {
+    display: flex;
+    margin-bottom: 20px;
+  }
+  
+  .directory-container input {
+    flex: 1;
+    padding: 10px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 4px;
+  }
+  
+  .directory-container button {
+    background-color: #ff2800;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .directory-container button:hover {
+    background-color: #e52600;
+  }
+  
+  .directory-container ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .directory-container li {
+    border-bottom: 1px solid #333;
+    padding: 10px 0;
+  }
+  
