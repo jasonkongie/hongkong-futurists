@@ -1,0 +1,11 @@
+{
+    "version": 2,
+    "routes": [
+      {
+        "src": "/api/profile",
+        "methods": ["GET", "POST"],
+        "dest": "/api/profile.js"
+      }
+    ]
+  }
+  
