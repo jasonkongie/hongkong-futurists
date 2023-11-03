@@ -10,8 +10,8 @@ function App() {
     <Router>
       <Routes>
         {/* <Route path="/apply" element={<AuthenticationHandler />} /> */}
-        <Route path="/terminal" element={<CustomTerminal />} />
         <Route path="/" element={<HomePage />} />
+        <Route path="/terminal" element={<CustomTerminal />} />
         <Route path="/apply" element={<RedirectComponent targetUrl="https://p4kq9oknrl1.typeform.com/to/LJUtAcbH" />} />
         <Route path="/profile/:profileId" element={<ProfilePage />} />
       </Routes>
