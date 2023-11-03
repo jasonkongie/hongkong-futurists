@@ -50,14 +50,15 @@ function CustomTerminal() {
 
       setConversationHistory([...conversationHistory, { role: 'user', content: userMessage }, { role: 'assistant', content: gptResponse }]);
       
-await pushToHistory(
+    await pushToHistory(
     <div>
-        <span className="terminal__user" style={{ marginLeft: 10 }}>You:</span> 
+        <span className="terminal__user-label" style={{ marginLeft: 10 }}>You:</span> 
         <strong className="terminal__user">{userMessage}</strong><br />
-        <span className="terminal__assistant" style={{ marginLeft: 10 }}>Assistant:</span> 
+        <span className="terminal__assistant-label" style={{ marginLeft: 10 }}>Assistant:</span> 
         <strong className="terminal__assistant">{gptResponse}</strong>
     </div>
     );
+    
 
     },
   }), [pushToHistory, conversationHistory]);

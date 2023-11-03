@@ -1,20 +1,24 @@
+@font-face {
+    font-family: 'Expletus Sans';
+    src: url('../../assets/fonts/ExpletusSans-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 .terminal {
-    /* Fullscreen dimensions */
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    
-    height: 100vh; /* full viewport height */
+    height: 100vh;
     overflow-y: auto;
-    background-color: #000; /* Changed to black */
+    background-color: #000;
     color: #C4C4C4;
     padding: 35px 45px;
     font-size: 14px;
     line-height: 1.42;
-    font-family: 'IBM Plex Mono', Consolas, Menlo, Monaco, 'Courier New', Courier,
-    monospace;
+    font-family: 'Expletus Sans', 'IBM Plex Mono', Consolas, Menlo, Monaco, 'Courier New', Courier, monospace;
     text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
 
@@ -30,7 +34,7 @@
 
 .terminal__prompt__label {
     flex: 0 0 auto;
-    color: #F9EF00;
+    color: #EBB02D;
 }
 
 .terminal__prompt__input {
@@ -50,20 +54,29 @@
     outline: none;
     font-size: 14px;
     line-height: 1.42;
-    font-family: 'IBM Plex Mono', Consolas, Menlo, Monaco, 'Courier New', Courier,
-    monospace;
+    font-family: 'Expletus Sans', 'IBM Plex Mono', Consolas, Menlo, Monaco, 'Courier New', Courier, monospace;
 }
 
-/* Added color classes for different roles */
-
 .terminal__system {
-    color: #FF4500; /* System messages in orange */
+    color: #FF4500;
 }
 
 .terminal__assistant {
-    color: #00FF00; /* Assistant messages in green */
+    color: #4FC0D0;
 }
 
 .terminal__user {
-    color: #1E90FF; /* User messages in blue */
+    color: #F24C3D;
+}
+
+.terminal__user-label {
+    color: #F9EF00;
+}
+
+.terminal__assistant-label {
+    color: #F9EF00;
+}
+
+.terminal__user-label::after, .terminal__assistant-label::after {
+    content: " ";
 }
