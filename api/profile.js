@@ -10,12 +10,12 @@ module.exports = (req, res) => {
   };
   
   // /api/profile.js (temporary debugging purpose)
-module.exports = (req, res) => {
-    if (req.method === 'GET') {
-      res.status(200).send('GET request to the profile page');
-    } else {
-      // Handle any other HTTP method
-      res.status(405).send('Method Not Allowed');
-    }
-  };
+// module.exports = (req, res) => {
+//     if (req.method === 'GET') {
+//       res.status(200).send('GET request to the profile page');
+//     } else {
+//       // Handle any other HTTP method
+//       res.status(405).send('Method Not Allowed');
+//     }
+//   };
   
