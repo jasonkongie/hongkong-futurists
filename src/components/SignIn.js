@@ -2,15 +2,8 @@ import React from 'react';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth, firestore } from './firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-
-// Define a Profile class to hold user profile information
-class Profile {
-  constructor(name = '', email = '', profilePicUrl = '') {
-    this.name = name;
-    this.email = email;
-    this.profilePicUrl = profilePicUrl;
-  }
-}
+import './SignIn.css'; // This line should be at the top of your SignIn.js file
+import collegeData from './colleges.json' // Import the college data
 
 const SignIn = () => {
   const provider = new GoogleAuthProvider();
@@ -19,8 +12,10 @@ const SignIn = () => {
     signInWithPopup(auth, provider)
       .then(async (result) => {
         const user = result.user;
-        if (!user.email.endsWith(".edu")) {
-          alert("Please use a .edu email address!");
+        const emailDomain = user.email.split('@')[1];
+
+        if (!user.email.endsWith(".edu") || !collegeData[emailDomain]) {
+          alert("Please use a valid .edu email address from a supported college!");
           auth.signOut();
         } else {
           const userRef = doc(firestore, 'users', user.uid);
@@ -28,30 +23,22 @@ const SignIn = () => {
   
           if (!docSnap.exists()) {
             // User not registered, attempt to create a new document
-            const newUserProfile = new Profile(user.displayName, user.email, user.photoURL);
-  
-            // Convert the Profile instance to a plain object
             const profileData = {
-              name: newUserProfile.name,
-              email: newUserProfile.email,
-              profilePicUrl: newUserProfile.profilePicUrl,
+              name: user.displayName,
+              email: user.email,
+              profilePicUrl: user.photoURL,
+              college: collegeData[emailDomain], // Use the college name from the JSON data
             };
   
             // Test: Output the profile metadata to the console
             console.log('Profile metadata:', profileData);
   
-            setDoc(userRef, profileData)
-              .then(() => {
-                // Pass the user profile to the profile creation page
-                window.location.href = `/profile-creation?name=${encodeURIComponent(profileData.name)}&email=${encodeURIComponent(profileData.email)}&profilePicUrl=${encodeURIComponent(profileData.profilePicUrl)}`;
-              })
-              .catch((error) => {
-                console.error("Error writing document to Firestore:", error);
-              });
+            await setDoc(userRef, profileData);
+            // Redirect to the user's profile page with edit mode
+            window.location.href = `/profile/${user.uid}`;
           } else {
-            // If you need to perform actions after the user is found to be already registered, do it here.
-            // For example, redirect to a dashboard or home page.
-            window.location.href = '/dashboard'; // Replace with your path
+            // Redirect to the user's profile page without edit mode
+            window.location.href = `/profile/${user.uid}`;
           }
         }
       })
@@ -59,7 +46,6 @@ const SignIn = () => {
         console.error("Error during Google sign-in:", error);
       });
   };
-  
 
   return (
     <div className="sign-in-container">

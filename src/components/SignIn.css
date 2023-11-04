@@ -1,0 +1,34 @@
+/* SignIn.css */
+.sign-in-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #000;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .sign-in-container h2 {
+    margin-bottom: 20px;
+    color: #ff2800;
+  }
+  
+  .sign-in-container button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #ff2800;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .sign-in-container button:hover {
+    background-color: #e62600;
+  }
+  
+  /* Add additional styles as needed */
+  
