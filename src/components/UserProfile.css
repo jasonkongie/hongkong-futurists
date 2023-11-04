@@ -6,21 +6,22 @@
     align-items: center;
     padding: 20px;
     background-color: black; /* Set the background color to black */
-  }
-  
-  /* ... other styles ... */
-  
-  /* Styles for the profile editing section */
-  .profile-editing {
+    color: white; /* Set the text color to white for all child elements */
+}
+
+/* ... other styles ... */
+
+/* Styles for the profile editing section */
+.profile-editing {
     display: flex;
     flex-direction: column;
     width: 100%; /* Adjust width as needed */
     max-width: 500px; /* Adjust max-width as needed */
     margin: 0 auto;
-  }
-  
-  .profile-editing input[type="text"],
-  .profile-editing textarea {
+}
+
+.profile-editing input[type="text"],
+.profile-editing textarea {
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
@@ -28,14 +29,14 @@
     font-size: 16px; /* Adjust font-size as needed */
     background-color: #333; /* Dark input fields for better visibility on black background */
     color: white; /* Light text for better visibility */
-  }
-  
-  .profile-editing textarea {
+}
+
+.profile-editing textarea {
     height: 100px; /* Adjust height as needed */
     resize: vertical; /* Allows the user to resize the textarea vertically */
-  }
-  
-  .profile-editing button {
+}
+
+.profile-editing button {
     padding: 10px 20px;
     background-color: #007bff; /* Primary button color */
     color: white;
@@ -44,9 +45,18 @@
     cursor: pointer;
     font-size: 16px; /* Adjust font-size as needed */
     transition: background-color 0.3s ease;
-  }
-  
-  .profile-editing button:hover {
+}
+
+.profile-editing button:hover {
     background-color: #0056b3; /* Darker shade for hover state */
-  }
-  
+}
+
+/* Additional styles to ensure all text is visible against the black background */
+.header, .sidebar, .feed, .widgets {
+    color: white; /* Ensuring text in these sections is also white */
+}
+
+/* If there are specific elements that need different colors, they can be set individually */
+.some-specific-element {
+    color: #someColor; /* Replace with the desired color */
+}
