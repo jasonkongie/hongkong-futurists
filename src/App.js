@@ -21,8 +21,8 @@ function App() {
           <Route path="/profile-creation" element={<ProfileCreation />} /> {/* Add this line */}
           <Route path="/directory" element={<Directory />} />
           <Route path="/" element={<HomePage />} />
+          <Route path="/:customPath" element={<UserProfile />} />
           <Route path="/profile/:userId" element={<UserProfile />} />
-          {/* <Route path="/profile/:customPath" element={<ProfilePage />} /> */}
         </Routes>
       </Router>
     </AuthProvider>
