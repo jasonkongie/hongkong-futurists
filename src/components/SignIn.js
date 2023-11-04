@@ -49,7 +49,7 @@ const SignIn = () => {
 
   return (
     <div className="sign-in-container">
-      <h2>Welcome to HK Future Leaders Organization</h2>
+      <h2>Welcome to Hong Kong Futurists Network</h2>
       <button onClick={signInWithGoogle}>Sign in with Google</button>
     </div>
   );
