@@ -50,7 +50,7 @@ const SignIn = () => {
   return (
     <div className="sign-in-container">
       <h2>Welcome to Hong Kong Futurists Network</h2>
-      <button onClick={signInWithGoogle}>Sign in with Google</button>
+      <button onClick={signInWithGoogle}>Sign Up with Google</button>
     </div>
   );
 };

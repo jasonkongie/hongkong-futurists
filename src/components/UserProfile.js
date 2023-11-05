@@ -79,8 +79,6 @@ const isPathUnique = async (path) => {
   }, [userId, customPath]); // Depend on both userId and customPath
   
 
-
-
   useEffect(() => {
     if (!currentUser) {
       navigate('/signin');

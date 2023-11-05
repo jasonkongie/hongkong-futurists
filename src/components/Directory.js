@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { collection, query, where, getDocs } from 'firebase/firestore';
-import { firestore } from './firebase'; // Import your firebase configurations
-import { Link } from 'react-router-dom'; // Import Link component
-import './Directory.css'; // CSS file for styling
+import { firestore } from './firebase';
+import { Link } from 'react-router-dom';
+import './Directory.css';
+import search from '../assets/SearchOutline.png'
+import ucBerkeleyLogo from '../assets/UC Berkeley.png';
+import ucdLogo from '../assets/UCD.png';
+import uclaLogo from '../assets/UCLA.png';
+import ucsdLogo from '../assets/UCSD.png';
+import uscLogo from '../assets/USC.svg.png';
+import defaultLogo from '../assets/UCLA.png'; // Make sure to add a default logo image in your assets
+import backgroundImage from '../assets/background.png';
+
 
 const Directory = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -13,7 +22,7 @@ const Directory = () => {
       const q = query(collection(firestore, 'users'));
       const querySnapshot = await getDocs(q);
       const usersData = querySnapshot.docs.map((doc) => ({
-        id: doc.id, // Capture the document ID
+        id: doc.id,
         ...doc.data(),
       }));
       setUsers(usersData);
@@ -25,7 +34,6 @@ const Directory = () => {
   const handleSearch = async (event) => {
     event.preventDefault();
     if (searchTerm) {
-      // Adjust the query to be case-insensitive if needed
       const q = query(
         collection(firestore, 'users'),
         where('name', '>=', searchTerm),
@@ -33,32 +41,63 @@ const Directory = () => {
       );
       const querySnapshot = await getDocs(q);
       const filteredUsers = querySnapshot.docs.map((doc) => ({
-        id: doc.id, // Capture the document ID
+        id: doc.id,
         ...doc.data(),
       }));
       setUsers(filteredUsers);
     }
   };
 
+  const getLogo = (college) => {
+    switch (college) {
+      case 'University of California, Berkeley':
+        return ucBerkeleyLogo;
+      case 'University of California, Davis':
+        return ucdLogo;
+      case 'University of California, Los Angeles':
+        return uclaLogo;
+      case 'University of California, San Diego':
+        return ucsdLogo;
+      case 'University of Southern California':
+        return uscLogo;
+      // Add cases for other universities if logos are available
+      // ...
+      default:
+        return defaultLogo; // Use the imported default logo
+    }
+  };
+  
+  
+
   return (
-    <div className="directory-container">
-      <h1>User Directory</h1>
-      <form onSubmit={handleSearch}>
-        <input
-          type="text"
-          placeholder="Search by name"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <button type="submit">Search</button>
-      </form>
-      <ul>
+  <div className="directory-container" style={{ backgroundImage: `url(${backgroundImage})` }}>
+      {/* ... other components ... */}
+      <div className="search-bar">
+        <form onSubmit={handleSearch}>
+          <input
+            type="text"
+            placeholder="Find Member.."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        <button type="submit">
+        <img src= {search} alt="Search" />
+        </button>
+        </form>
+      </div>
+      <div className="user-cards">
         {users.map((user) => (
-          <li key={user.id}>
-            <Link to={`/profile/${user.id}`}>{user.name}</Link> - {user.email} - {user.college}
-          </li>
+          <div key={user.id} className="user-card">
+            <Link to={`/profile/${user.id}`}>
+                <img src={getLogo(user.college)} alt={`${user.name}'s college logo`} />
+              <div>{user.name}</div>
+              <div>{user.email}</div>
+              <div>{user.college}</div>
+            </Link>
+          </div>
         ))}
-      </ul>
+      </div>
+      {/* ... other components ... */}
     </div>
   );
 };
