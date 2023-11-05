@@ -18,7 +18,7 @@ const LoadingPage = ({ strings = ['Loading...'], typeSpeed = 100, backSpeed = 50
     return () => {
       typed.destroy();
     };
-  }, [strings, typeSpeed, backSpeed, loop, el]);
+  }, [strings, typeSpeed, backSpeed, loop]);
 
   return (
     <div className="loading-container">

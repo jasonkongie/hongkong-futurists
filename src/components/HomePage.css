@@ -1,1 +1,15 @@
+/* HomePage.css */
 
+.homepage {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Add additional styles for the homepage as needed */
+  

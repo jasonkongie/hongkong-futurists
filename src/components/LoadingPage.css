@@ -4,13 +4,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: black; 
-  z-index: 9999;
+  padding: 50px; /* Adjust padding as needed */
+  /* Removed background-color for transparency */
+  z-index: 10; /* Adjust z-index as needed */
 }
 
 .loading-element {
