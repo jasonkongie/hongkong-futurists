@@ -90,18 +90,23 @@
   font-size: 0.9em; /* Adjust the size as needed */
 }
 
+/* ... other styles ... */
+
 /* Responsive design for mobile devices */
 @media (max-width: 768px) {
   .user-cards {
-      justify-content: space-around;
+    justify-content: space-around;
   }
 
   .user-card {
-      width: calc(50% - 20px); /* Subtract the gap from the 50% width */
+    width: calc(50% - 10px); /* Adjust the width to create space between the cards */
+    margin: 5px; /* Add margin to create space around the cards */
   }
 
   /* Adjust the search bar for smaller screens */
   .search-bar {
-      width: 90%; /* Make the search bar wider on smaller screens */
+    width: 90%; /* Make the search bar wider on smaller screens */
+    margin: 10px auto; /* Center the search bar with automatic margins */
   }
 }
+
