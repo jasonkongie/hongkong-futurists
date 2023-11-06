@@ -70,7 +70,7 @@ const Directory = () => {
   
 
   return (
-  <div className="directory-container" style={{ backgroundImage: `url(${backgroundImage})` }}>
+  <div className="directory-container">
       {/* ... other components ... */}
       <div className="search-bar">
         <form onSubmit={handleSearch}>
@@ -91,7 +91,6 @@ const Directory = () => {
             <Link to={`/profile/${user.id}`}>
                 <img src={getLogo(user.college)} alt={`${user.name}'s college logo`} />
               <div>{user.name}</div>
-              <div>{user.email}</div>
               <div>{user.college}</div>
             </Link>
           </div>

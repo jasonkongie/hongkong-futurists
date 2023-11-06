@@ -1,0 +1,51 @@
+/* Dropdown.css */
+.dropdowns {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%; /* Adjusted to take the full width of the parent container */
+  }
+  
+  .dropdowns .text-wrapper {
+    color: #666666;
+    font-family: "Noto Sans", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 18px;
+  }
+  
+  .dropdowns .input-field {
+    background-color: #ffffff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    width: 100%;
+    border: 1px solid #cccccc;
+    position: relative;
+  }
+  
+  .dropdowns .dropdown {
+    font-family: "Noto Sans", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color: #666666;
+    border: none;
+    outline: none;
+    -webkit-appearance: none; /* Removes default styling of dropdown for Webkit browsers */
+    -moz-appearance: none; /* Removes default styling of dropdown for Firefox */
+    appearance: none;
+    background-color: transparent;
+    width: 100%;
+    cursor: pointer;
+  }
+  
+  .dropdowns .icon {
+    position: absolute;
+    right: 16px; /* Adjust as necessary */
+    height: 24px;
+    width: 24px;
+    pointer-events: none; /* Makes the icon non-interactive */
+  }
+  

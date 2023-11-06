@@ -6,6 +6,9 @@ import { signOut } from 'firebase/auth';
 import { AuthContext } from './AuthContext';
 import { auth, firestore } from './firebase';
 import './UserProfile.css';
+import { TextInput } from './form/textInput'; // Adjust the path as necessary
+import MenuBar from './MenuBar'; // Import the MenuBar component
+
 
 const UserProfile = () => {
   const { userId, customPath } = useParams();
@@ -83,10 +86,13 @@ const UserProfile = () => {
       return;
     }
   
-    const isUnique = await isPathUnique(editPath);
-    if (!isUnique) {
-      alert('This path is already taken. Please choose another one.');
-      return;
+    // Only perform the uniqueness check if the path has changed
+    if (editPath !== userProfile.path) {
+      const isUnique = await isPathUnique(editPath);
+      if (!isUnique) {
+        alert('This path is already taken. Please choose another one.');
+        return;
+      }
     }
   
     const userRef = doc(firestore, 'users', userId);
@@ -102,8 +108,15 @@ const UserProfile = () => {
         path: editPath,
       });
   
-      const pathRef = doc(firestore, 'paths', editPath);
-      await setDoc(pathRef, { userId: userId });
+      // If the path has changed, update it in the 'paths' collection
+      if (editPath !== userProfile.path) {
+        const newPathRef = doc(firestore, 'paths', editPath);
+        await setDoc(newPathRef, { userId: userId });
+  
+        // If you want to remove the old path, you can do so here
+        // const oldPathRef = doc(firestore, 'paths', userProfile.path);
+        // await deleteDoc(oldPathRef);
+      }
   
       setUserProfile({
         ...userProfile,
@@ -117,13 +130,14 @@ const UserProfile = () => {
         path: editPath,
       });
   
-      alert('Your profile and custom path have been updated!');
+      alert('Your profile has been updated!');
       setEditMode(false);
     } catch (error) {
       console.error('Error updating profile:', error);
       alert('There was an error updating your profile. Please try again.');
     }
   };
+  
 
   const toggleEditMode = () => {
     setEditMode(!editMode);
@@ -143,9 +157,9 @@ const UserProfile = () => {
   if (!userProfile) {
     return <div>Loading...</div>;
   }
-
   return (
     <div className="profile-container">
+      <MenuBar /> {/* Include the MenuBar component */}
       <div className="header">
         {/* Header content here */}
       </div>
@@ -157,88 +171,123 @@ const UserProfile = () => {
           {currentUser && currentUser.uid === userId && (
             <>
               <button onClick={toggleEditMode} className="edit-profile-button">
-              {editMode ? 'View Profile' : 'Edit Profile'}
-            </button>
-
-            <button onClick={handleSignOut} className="sign-out-button">
-              Sign Out
-            </button>          
+                {editMode ? 'View Profile' : 'Edit Profile'}
+              </button>
+              <button onClick={handleSignOut} className="sign-out-button">
+                Sign Out
+              </button>
             </>
-
           )}
           {!editMode ? (
-            <>
-              {/* Profile view mode */}
-              <h2>Name: {userProfile.name}</h2>
-              <p>Introduction: {userProfile.introduction}</p>
-              <p>LinkedIn: {userProfile.linkedIn}</p>
-              <p>Interests: {userProfile.interests}</p>
-              <p>Birthday: {userProfile.birthday}</p>
-              <p>Personality Type: {userProfile.personalityType}</p>
-              <p>Resume: {userProfile.resume}</p>
-              {/* ... other profile fields ... */}
-            </>
+            <div className="profile-viewing">
+              <TextInput
+                property1="input-regular"
+                value={userProfile.name}
+                disabled={true}
+                placeholder="Full Name"
+              />
+              <TextInput
+                property1="input-regular"
+                value={userProfile.introduction}
+                disabled={true}
+                placeholder="Introduction"
+                multiline
+              />
+              <TextInput
+                property1="input-regular"
+                value={userProfile.linkedIn}
+                disabled={true}
+                placeholder="LinkedIn Profile"
+              />
+              <TextInput
+                property1="input-regular"
+                value={userProfile.interests}
+                disabled={true}
+                placeholder="Interests/Hobbies"
+              />
+              <TextInput
+                property1="input-regular"
+                value={userProfile.birthday}
+                disabled={true}
+                placeholder="Birthday"
+                type="date"
+              />
+              <TextInput
+                property1="input-regular"
+                value={userProfile.personalityType}
+                disabled={true}
+                placeholder="Personality Type (e.g., INTP)"
+              />
+              <TextInput
+                property1="input-regular"
+                value={userProfile.resume}
+                disabled={true}
+                placeholder="Resume"
+                type="file"
+              />
+              <TextInput
+                property1="input-regular"
+                value={userProfile.path}
+                disabled={true}
+                placeholder="Custom Profile Path"
+              />
+            </div>
           ) : (
-            <>
-              {/* Profile edit mode */}
-              <div className="profile-editing">
-                <input
-                  type="text"
-                  value={editName}
-                  onChange={(e) => setEditName(e.target.value)}
-                  placeholder="Full Name"
-                />
-                <textarea
-                  value={editIntroduction}
-                  onChange={(e) => setEditIntroduction(e.target.value)}
-                  placeholder="Introduction"
-                />
-                {/* ... other input fields for editing ... */}
-                <input
-                  type="text"
-                  className="profile-editing__input"
-                  value={editLinkedIn}
-                  onChange={(e) => setEditLinkedIn(e.target.value)}
-                  placeholder="LinkedIn Profile"
-                />
-                <input
-                  type="date"
-                  className="profile-editing__input"
-                  value={editBirthday}
-                  onChange={(e) => setEditBirthday(e.target.value)}
-                  placeholder="Birthday"
-                />
-                <input
-                  type="text"
-                  className="profile-editing__input"
-                  value={editInterests}
-                  onChange={(e) => setEditInterests(e.target.value)}
-                  placeholder="Interests/Hobbies"
-                />
-                <input
-                  type="text"
-                  className="profile-editing__input"
-                  value={editPersonalityType}
-                  onChange={(e) => setEditPersonalityType(e.target.value)}
-                  placeholder="Personality Type (e.g., INTP)"
-                />
-                <input
-                  type="file"
-                  className="profile-editing__input"
-                  onChange={handleResumeUpload}
-                  placeholder="Upload Resume"
-                />
-                <input
-                  type="text"
-                  value={editPath}
-                  onChange={(e) => setEditPath(e.target.value)}
-                  placeholder="Custom Profile Path"
-                />
-                <button onClick={handleUpdateProfile} className="save-changes-button">
-                  Save Changes
-                </button>
-              </div>
-            </>
+            <div className="profile-editing">
+              <TextInput
+                property1="input-regular"
+                value={editName}
+                onChange={(e) => setEditName(e.target.value)}
+                placeholder="Full Name"
+              />
+              <TextInput
+                property1="input-regular"
+                value={editIntroduction}
+                onChange={(e) => setEditIntroduction(e.target.value)}
+                placeholder="Introduction"
+                multiline
+              />
+              <TextInput
+                property1="input-regular"
+                value={editLinkedIn}
+                onChange={(e) => setEditLinkedIn(e.target.value)}
+                placeholder="LinkedIn Profile"
+              />
+              <TextInput
+                property1="input-regular"
+                value={editInterests}
+                onChange={(e) => setEditInterests(e.target.value)}
+                placeholder="Interests/Hobbies"
+              />
+              <TextInput
+                property1="input-regular"
+                value={editBirthday}
+                onChange={(e) => setEditBirthday(e.target.value)}
+                placeholder="Birthday"
+                type="date"
+              />
+              <TextInput
+                property1="input-regular"
+                value={editPersonalityType}
+                onChange={(e) => setEditPersonalityType(e.target.value)}
+                placeholder="Personality Type (e.g., INTP)"
+              />
+              <TextInput
+                property1="input-regular"
+                onChange={handleResumeUpload}
+                placeholder="Upload Resume"
+                type="file"
+              />
+              <TextInput
+                property1="input-regular"
+                value={editPath}
+                onChange={(e) => setEditPath(e.target.value)}
+                placeholder="Custom Profile Path"
+              />
+              <button onClick={handleUpdateProfile} className="save-changes-button">
+                Save Changes
+              </button>
+            </div>
           )}
         </div>
         <div className="widgets">
@@ -247,6 +296,7 @@ const UserProfile = () => {
       </div>
     </div>
   );
+  
 };
 
 export default UserProfile;
