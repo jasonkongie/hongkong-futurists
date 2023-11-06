@@ -98,12 +98,14 @@
 /* Responsive design for mobile devices */
 @media (max-width: 768px) {
   .user-cards {
-    justify-content: space-between; /* This will ensure there is space between the cards */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Creates two columns */
+    grid-gap: 20px; /* This adds space between the cards */
   }
 
   .user-card {
-    width: 48%; /* Slightly less than 50% to account for padding/margins */
-    margin-bottom: 20px; /* Add some space below each card */
+    width: 100%; /* Each card will take up 100% of the grid column width */
+    margin-bottom: 0; /* Reset any margin-bottom from other styles if necessary */
   }
 
   /* Adjust the search bar for smaller screens */
