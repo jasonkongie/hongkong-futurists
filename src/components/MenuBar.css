@@ -1,39 +1,41 @@
 .menu-bar {
     display: flex;
-    justify-content: center;
+    justify-content: space-between; /* Align items on both ends */
     align-items: center;
-    padding: 10px;
+    padding: 10px 20px; /* Add 20px padding to the left and right */
     width: 100%;
     background-color: rgba(0, 0, 0, 0); /* Transparent background */
-    position: relative; /* Needed for absolute positioning of the home link */
   }
   
-  .menu-item {
+  .menu-item, .home-link, .sign-in-button {
     color: #d1d1d1;
     font-family: "Poppins-SemiBold", Helvetica, sans-serif;
     font-size: 16px;
     font-weight: 600;
     letter-spacing: 0;
-    line-height: 80.5px;
+    line-height: 20.5px;
     cursor: pointer; /* Change cursor to pointer to indicate clickable items */
     white-space: nowrap;
-    margin-right: 32px; /* Half of your gap size to create equal spacing on both sides */
+    margin-right: 32px; /* Consistent spacing between menu items */
+    text-decoration: none; /* Remove underline from links */
   }
   
-  .menu-item:hover {
+  .menu-item:last-child {
+    margin-right: 0; /* Remove margin from the last item */
+  }
+  
+  .menu-item:hover, .home-link:hover, .sign-in-button:hover {
     color: #ffffff; /* Change color on hover for visual feedback */
   }
   
   .home-link {
-    position: absolute;
-    left: 10px; /* Adjust as needed */
     font-size: 24px; /* Larger font size for home link */
     color: #ffffff; /* Different color for home link */
     font-weight: 700;
+    margin-right: auto; /* Pushes all other items to the right */
   }
   
-  /* Adjust the margin-left for the first menu item after the home link to create a large gap */
-  .menu-item:first-of-type {
-    margin-left: 200px; /* Adjust the value to create a large gap */
+  .profile-login-container {
+    margin-left: auto; /* This will push the profile/login container to the right */
   }
   

@@ -2,9 +2,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
+import { signOut } from 'firebase/auth';
 import { AuthContext } from './AuthContext';
-import { firestore } from './firebase';
-
+import { auth, firestore } from './firebase';
 import './UserProfile.css';
 
 const UserProfile = () => {
@@ -23,7 +23,7 @@ const UserProfile = () => {
   const [editPath, setEditPath] = useState('');
 
   // Function to check if the path is unique
-const isPathUnique = async (path) => {
+  const isPathUnique = async (path) => {
     const pathRef = doc(firestore, 'paths', path);
     const docSnap = await getDoc(pathRef);
     return !docSnap.exists();
@@ -31,8 +31,6 @@ const isPathUnique = async (path) => {
 
   const handleResumeUpload = (event) => {
     const file = event.target.files[0];
-    // Here you would handle the file upload process to Google Drive or another storage service.
-    // This is a placeholder function to be replaced with your actual upload logic.
     console.log('File selected for upload:', file.name);
   };
 
@@ -40,7 +38,6 @@ const isPathUnique = async (path) => {
     const fetchUserProfile = async () => {
       let actualUserId = userId;
   
-      // If customPath is defined, we need to fetch the userId associated with it
       if (customPath) {
         const pathRef = doc(firestore, 'paths', customPath);
         const pathSnap = await getDoc(pathRef);
@@ -48,13 +45,10 @@ const isPathUnique = async (path) => {
           actualUserId = pathSnap.data().userId;
         } else {
           console.log('No such custom path!');
-          // Handle the case where the custom path doesn't exist
-          // e.g., redirect to a 404 page or show an error message
           return;
         }
       }
   
-      // Fetch the user profile using the actual user ID
       const userRef = doc(firestore, 'users', actualUserId);
       const userSnap = await getDoc(userRef);
   
@@ -71,13 +65,11 @@ const isPathUnique = async (path) => {
         setEditPath(data.path || '');
       } else {
         console.log('No such user!');
-        // Handle the case where the user doesn't exist
       }
     };
   
     fetchUserProfile();
-  }, [userId, customPath]); // Depend on both userId and customPath
-  
+  }, [userId, customPath]);
 
   useEffect(() => {
     if (!currentUser) {
@@ -86,7 +78,6 @@ const isPathUnique = async (path) => {
   }, [currentUser, navigate]);
 
   const handleUpdateProfile = async () => {
-    // First, check if the path is unique before proceeding with other updates
     if (editPath.trim() === '') {
       alert('Please enter a custom path.');
       return;
@@ -98,7 +89,6 @@ const isPathUnique = async (path) => {
       return;
     }
   
-    // If the path is unique, proceed with updating the user's profile
     const userRef = doc(firestore, 'users', userId);
     try {
       await updateDoc(userRef, {
@@ -109,14 +99,12 @@ const isPathUnique = async (path) => {
         birthday: editBirthday,
         interests: editInterests,
         personalityType: editPersonalityType,
-        path: editPath, // Update the path in the user's document
+        path: editPath,
       });
   
-      // Update the path in the paths collection
       const pathRef = doc(firestore, 'paths', editPath);
       await setDoc(pathRef, { userId: userId });
   
-      // Update local state and give user feedback
       setUserProfile({
         ...userProfile,
         name: editName,
@@ -136,10 +124,20 @@ const isPathUnique = async (path) => {
       alert('There was an error updating your profile. Please try again.');
     }
   };
-  
 
   const toggleEditMode = () => {
     setEditMode(!editMode);
+  };
+
+  // Sign out function
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      navigate('/');
+    } catch (error) {
+      console.error('Error signing out:', error);
+      alert('Error signing out. Please try again.');
+    }
   };
 
   if (!userProfile) {
@@ -157,9 +155,16 @@ const isPathUnique = async (path) => {
         </div>
         <div className="feed">
           {currentUser && currentUser.uid === userId && (
-            <button onClick={toggleEditMode} className="edit-profile-button">
+            <>
+              <button onClick={toggleEditMode} className="edit-profile-button">
               {editMode ? 'View Profile' : 'Edit Profile'}
             </button>
+
+            <button onClick={handleSignOut} className="sign-out-button">
+              Sign Out
+            </button>          
+            </>
+
           )}
           {!editMode ? (
             <>
@@ -171,7 +176,6 @@ const isPathUnique = async (path) => {
               <p>Birthday: {userProfile.birthday}</p>
               <p>Personality Type: {userProfile.personalityType}</p>
               <p>Resume: {userProfile.resume}</p>
-              <p>College: {userProfile.college}</p>
               {/* ... other profile fields ... */}
             </>
           ) : (
@@ -190,46 +194,45 @@ const isPathUnique = async (path) => {
                   placeholder="Introduction"
                 />
                 {/* ... other input fields for editing ... */}
-
-              <input
-                type="text"
-                className="profile-editing__input"
-                value={editLinkedIn}
-                onChange={(e) => setEditLinkedIn(e.target.value)}
-                placeholder="LinkedIn Profile"
-              />
-              <input
-                type="date"
-                className="profile-editing__input"
-                value={editBirthday}
-                onChange={(e) => setEditBirthday(e.target.value)}
-                placeholder="Birthday"
-              />
-              <input
-                type="text"
-                className="profile-editing__input"
-                value={editInterests}
-                onChange={(e) => setEditInterests(e.target.value)}
-                placeholder="Interests/Hobbies"
-              />
-              <input
-                type="text"
-                className="profile-editing__input"
-                value={editPersonalityType}
-                onChange={(e) => setEditPersonalityType(e.target.value)}
-                placeholder="Personality Type (e.g., INTP)"
-              />
-              <input
-                type="file"
-                className="profile-editing__input"
-                onChange={handleResumeUpload}
-                placeholder="Upload Resume"
-              />
                 <input
-                type="text"
-                value={editPath}
-                onChange={(e) => setEditPath(e.target.value)}
-                placeholder="Custom Profile Path"
+                  type="text"
+                  className="profile-editing__input"
+                  value={editLinkedIn}
+                  onChange={(e) => setEditLinkedIn(e.target.value)}
+                  placeholder="LinkedIn Profile"
+                />
+                <input
+                  type="date"
+                  className="profile-editing__input"
+                  value={editBirthday}
+                  onChange={(e) => setEditBirthday(e.target.value)}
+                  placeholder="Birthday"
+                />
+                <input
+                  type="text"
+                  className="profile-editing__input"
+                  value={editInterests}
+                  onChange={(e) => setEditInterests(e.target.value)}
+                  placeholder="Interests/Hobbies"
+                />
+                <input
+                  type="text"
+                  className="profile-editing__input"
+                  value={editPersonalityType}
+                  onChange={(e) => setEditPersonalityType(e.target.value)}
+                  placeholder="Personality Type (e.g., INTP)"
+                />
+                <input
+                  type="file"
+                  className="profile-editing__input"
+                  onChange={handleResumeUpload}
+                  placeholder="Upload Resume"
+                />
+                <input
+                  type="text"
+                  value={editPath}
+                  onChange={(e) => setEditPath(e.target.value)}
+                  placeholder="Custom Profile Path"
                 />
                 <button onClick={handleUpdateProfile} className="save-changes-button">
                   Save Changes

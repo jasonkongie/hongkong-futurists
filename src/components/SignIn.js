@@ -5,7 +5,7 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import './SignIn.css'; // Ensure this contains only the styles for the button
 import collegeData from './colleges.json'; // Import the college data
 
-const SignIn = () => {
+const SignIn = ({ signIn }) => { 
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     try {
@@ -34,10 +34,10 @@ const SignIn = () => {
 
           await setDoc(userRef, profileData);
           // Redirect to the user's profile page with edit mode
-          window.location.href = `/profile/${user.uid}?edit=true`;
+          window.location.href = `/directory`;
         } else {
           // Redirect to the user's profile page without edit mode
-          window.location.href = `/profile/${user.uid}`;
+          window.location.href = `/directory`;
         }
       }
     } catch (error) {
@@ -45,8 +45,10 @@ const SignIn = () => {
     }
   };
 
+  const buttonText = signIn ? 'Sign up with Google' : 'Log In';
+
   return (
-    <button className="sign-in-button" onClick={signInWithGoogle}>Sign In with Google</button>
+    <button className="sign-in-button" onClick={signInWithGoogle}> {buttonText} </button>
   );
 };
 

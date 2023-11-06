@@ -15,12 +15,12 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
+        <Route path="/" element={<HomePage />} />
           <Route path="/terminal" element={<CustomTerminal />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/about-us" element={<AboutUsPage />} />
           <Route path="/profile-creation" element={<ProfileCreation />} /> {/* Add this line */}
           <Route path="/directory" element={<Directory />} />
-          <Route path="/" element={<HomePage />} />
           <Route path="/:customPath" element={<UserProfile />} />
           <Route path="/profile/:userId" element={<UserProfile />} />
         </Routes>

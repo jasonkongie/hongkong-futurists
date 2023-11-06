@@ -11,7 +11,7 @@ function HomePage() {
       <MenuBar />
       <div className="content">
         <LoadingPage strings={['Welcome to Hong Kong Futurists']} loop={false} typeSpeed={50} />
-        <SignIn />
+        <SignIn signIn={true} />
       </div>
       {/* Include other components or content here */}
     </div>
