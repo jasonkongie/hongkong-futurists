@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import SignIn from './components/SignIn';
-import CustomTerminal from './components/CustomTerminal.tsx';
+import CustomTerminal from './components/Terminal/CustomTerminal.tsx';
 import Directory from './components/Directory'; // Import the Directory component
 import UserProfile from './components/UserProfile';
 import AboutUsPage from './components/AboutUsPage';
