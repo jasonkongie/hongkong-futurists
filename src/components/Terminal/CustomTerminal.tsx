@@ -1,13 +1,8 @@
-import React, { useContext, useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Terminal } from './Terminal.tsx';
 import { useTerminal } from './hooks.tsx';
 import { ask } from './ChatGPT.tsx';
-import { doc, getDoc, Firestore } from 'firebase/firestore'; // Import Firestore functions
-import { AuthContext } from '../AuthContext'; // Import a hypothetical authentication context
-
-interface CustomTerminalProps {
-  firestore: Firestore;
-}
+import MenuBar from '../MenuBar.js';
 
 const initialConversationHistory = [
     { role: 'system', content: 'You are the assistant, acting as an interviewer for the Hong Kong Futurists organization. Your mission is to find the brightest minds from Hong Kong who are studying or have graduated from recognized Californian institutions.' },
@@ -34,10 +29,10 @@ function CustomTerminal() {
     resetTerminal();
     pushToHistory(
       <>
-        <div><strong>Welcome</strong> to the Hong Kong Futurist's A.I terminal.</div>
+        <div><strong>Welcome!</strong> to the Hong Kong Futurist's A.I terminal.</div>
         <div style={{ fontSize: 20 }}>The <span style={{ color: 'red' }}><strong>most exclusive</strong></span> student business league in California</div>
         <br />
-        <div>Ask us about anything: </div>
+        <div>Type start to begin: </div>
       </>
     );
   }, []);
@@ -60,7 +55,7 @@ await pushToHistory(
     <div>
         <span className="terminal__user" style={{ marginLeft: 10 }}>You:</span> 
         <strong className="terminal__user">{userMessage}</strong><br />
-        <span className="terminal__assistant" style={{ marginLeft: 10 }}>HAL 9000: </span> 
+        <span className="terminal__assistant" style={{ marginLeft: 10 }}>Assistant:</span> 
         <strong className="terminal__assistant">{gptResponse}</strong>
     </div>
     );
@@ -70,6 +65,7 @@ await pushToHistory(
 
   return (
     <div className="CustomTerminal">
+      <MenuBar/>
       <Terminal
         history={history}
         ref={setTerminalRef}
@@ -81,4 +77,3 @@ await pushToHistory(
 }
 
 export default CustomTerminal;
-
