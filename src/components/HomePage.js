@@ -10,7 +10,7 @@ function HomePage() {
     <div className="homepage" style={{ backgroundImage: `url(${backgroundImage})` }}>
       <MenuBar />
       <div className="content">
-        <LoadingPage strings={['Welcome to Hong Kong Futurists']} />
+        <LoadingPage strings={['Welcome to Hong Kong Futurists']} loop={false} typeSpeed={50} />
         <SignIn />
       </div>
       {/* Include other components or content here */}

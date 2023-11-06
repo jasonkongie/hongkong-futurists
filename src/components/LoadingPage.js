@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import Typed from 'typed.js';
 import './LoadingPage.css';
 
-const LoadingPage = ({ strings = ['Loading...'], typeSpeed = 100, backSpeed = 50, loop = true }) => {
+const LoadingPage = ({ strings, typeSpeed=100, backSpeed=50, loop }) => {
   const el = useRef(null);
 
   useEffect(() => {
