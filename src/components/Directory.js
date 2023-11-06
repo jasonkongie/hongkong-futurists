@@ -10,8 +10,7 @@ import uclaLogo from '../assets/UCLA.png';
 import ucsdLogo from '../assets/UCSD.png';
 import uscLogo from '../assets/USC.svg.png';
 import defaultLogo from '../assets/UCLA.png'; // Make sure to add a default logo image in your assets
-import backgroundImage from '../assets/background.png';
-
+import MenuBar from './MenuBar';
 
 const Directory = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -67,11 +66,9 @@ const Directory = () => {
     }
   };
   
-  
-
   return (
-  <div className="directory-container">
-      {/* ... other components ... */}
+    <div className="directory-container">
+      <MenuBar/>
       <div className="search-bar">
         <form onSubmit={handleSearch}>
           <input
@@ -80,18 +77,19 @@ const Directory = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-        <button type="submit">
+          <button type="submit">
         <img src= {search} alt="Search" />
         </button>
         </form>
       </div>
+      {/* ... other components ... */}
       <div className="user-cards">
         {users.map((user) => (
           <div key={user.id} className="user-card">
             <Link to={`/profile/${user.id}`}>
-                <img src={getLogo(user.college)} alt={`${user.name}'s college logo`} />
-              <div>{user.name}</div>
-              <div>{user.college}</div>
+              <img src={getLogo(user.college)} alt={`${user.name}'s college logo`} />
+              <div className="user-name">{user.name}</div> {/* Add class for user name */}
+              <div className="user-college">{user.college}</div> {/* Add class for user college */}
             </Link>
           </div>
         ))}

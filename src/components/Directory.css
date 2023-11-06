@@ -7,36 +7,42 @@
     background-size: cover;
     background-repeat: no-repeat;
   }
-  
-  /* Center the search bar */
+    
+  /* Center the search bar and make it wider */
   .search-bar {
     display: flex;
     justify-content: center;
-    margin: 20px 0;
+    margin: 20px auto; /* Center the search bar with automatic margins */
+    width: 75%; /* Set the width of the search bar to 75% of its parent container */
   }
-  
+
   .search-bar form {
     display: flex;
     align-items: center;
     background-color: #3e4051;
     border-radius: 10px;
     padding: 10px;
+    width: 100%; /* Make the form take the full width of the .search-bar container */
+    max-height: 30px;
   }
-  
+
   .search-bar input {
     border: none;
     background: transparent;
     color: #9c9c9c;
     margin-right: 10px;
     padding: 10px;
+    width: calc(100% - 50px); /* Adjust width to account for button width and padding */
   }
-  
+
   .search-bar button {
     background: transparent;
-    border: none;
+    border: 2em;
     cursor: pointer;
+    padding: 10px; /* Add padding to the button for better clickability */
+    width: 40px; /* Set a fixed width for the button */
   }
-  
+
   /* User cards styling */
   .user-cards {
     display: flex;
@@ -75,3 +81,11 @@
   
   /* Add other styles from your Figma design as needed */
   
+  .user-name {
+    font-size: 1.4em; /* Adjust the size as needed */
+    margin-bottom: 7px;
+  }
+  
+  .user-college {
+    font-size: 0.9em; /* Adjust the size as needed */
+  }
