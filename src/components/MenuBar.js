@@ -13,7 +13,6 @@ const MenuBar = () => {
     <Link to="/" className="home-link">Home</Link>
     <Link to="/about-us" className="menu-item">About Us</Link>
     <Link to="/directory" className="menu-item">Directory</Link>
-    <Link to="/contact" className="menu-item">Contact Us</Link>
     <div className="profile-login-container">
         {currentUser ? (
         <Link to={`/profile/${currentUser.uid}`} className="menu-item">Profile</Link>
