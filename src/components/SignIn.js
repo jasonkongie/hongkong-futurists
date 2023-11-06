@@ -1,6 +1,6 @@
 import React from 'react';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { auth, firestore } from './firebase'; // Ensure these paths are correct
+import { auth, firestore } from '../firebase'; // Ensure these paths are correct
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import './SignIn.css'; // Ensure this contains only the styles for the button
 import collegeData from './colleges.json'; // Import the college data

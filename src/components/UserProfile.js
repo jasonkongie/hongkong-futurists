@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
 import { AuthContext } from './AuthContext';
-import { auth, firestore } from './firebase';
+import { auth, firestore } from '../firebase';
 import './UserProfile.css';
 import { TextInput } from './form/textInput'; // Adjust the path as necessary
 import MenuBar from './MenuBar'; // Import the MenuBar component
