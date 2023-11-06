@@ -1,14 +1,19 @@
 import React from 'react';
-import MenuBar from './MenuBar'; // Ensure this import path is correct
-import backgroundImage from '../assets/background.png'; // Import the background image
+import MenuBar from './MenuBar'; // Ensure this path is correct
 import LoadingPage from './LoadingPage';
-import './HomePage.css'; // Ensure this import path is correct
+import backgroundImage from '../assets/background.png'; // Import the background image
+import './HomePage.css'; // Ensure this path is correct
+import SignIn from './SignIn';
 
 function HomePage() {
   return (
     <div className="homepage" style={{ backgroundImage: `url(${backgroundImage})` }}>
       <MenuBar />
-      <LoadingPage strings={['Welcome to Hong Kong Futurists']} />
+      <div className="content">
+        <LoadingPage strings={['Welcome to Hong Kong Futurists']} />
+        <SignIn />
+      </div>
+      {/* Include other components or content here */}
     </div>
   );
 }

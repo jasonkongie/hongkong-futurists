@@ -1,17 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
 
-.loading-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 50px; /* Adjust padding as needed */
-  /* Removed background-color for transparency */
-  z-index: 10; /* Adjust z-index as needed */
-}
-
 .loading-element {
   font-family: 'Cormorant Garamond', serif;
   font-size: 3rem; 
   font-weight: 700; 
   color: white;
+  /* Add a margin-bottom if you want to control the space between this text and the SignIn button */
+  margin-bottom: 2rem;
 }
