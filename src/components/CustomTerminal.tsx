@@ -28,8 +28,8 @@ function CustomTerminal() {
     resetTerminal();
     pushToHistory(
       <>
-        <div><strong>Welcome!</strong> to the Hong Kong Futurist's application terminal.</div>
-        <div style={{ fontSize: 20 }}>The <span style={{ color: 'yellow' }}><strong>most exclusive</strong></span> student business league in California</div>
+        <div><strong>Welcome!</strong> to the Hong Kong Futurist's A.I terminal.</div>
+        <div style={{ fontSize: 20 }}>The <span style={{ color: 'red' }}><strong>most exclusive</strong></span> student business league in California</div>
         <br />
         <div>Type start to begin: </div>
       </>

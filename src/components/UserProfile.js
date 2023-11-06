@@ -76,67 +76,10 @@ const UserProfile = () => {
 
   useEffect(() => {
     if (!currentUser) {
-      navigate('/signin');
+      navigate('/');
     }
   }, [currentUser, navigate]);
 
-  // const handleUpdateProfile = async () => {
-  //   if (editPath.trim() === '') {
-  //     alert('Please enter a custom path.');
-  //     return;
-  //   }
-  
-  //   // Only perform the uniqueness check if the path has changed
-  //   if (editPath !== userProfile.path) {
-  //     const isUnique = await isPathUnique(editPath);
-  //     if (!isUnique) {
-  //       alert('This path is already taken. Please choose another one.');
-  //       return;
-  //     }
-  //   }
-  
-  //   const userRef = doc(firestore, 'users', userId);
-  //   try {
-  //     await updateDoc(userRef, {
-  //       name: editName,
-  //       introduction: editIntroduction,
-  //       resume: editResume,
-  //       linkedIn: editLinkedIn,
-  //       birthday: editBirthday,
-  //       interests: editInterests,
-  //       personalityType: editPersonalityType,
-  //       path: editPath,
-  //     });
-  
-  //     // If the path has changed, update it in the 'paths' collection
-  //     if (editPath !== userProfile.path) {
-  //       const newPathRef = doc(firestore, 'paths', editPath);
-  //       await setDoc(newPathRef, { userId: userId });
-  
-  //       // If you want to remove the old path, you can do so here
-  //       // const oldPathRef = doc(firestore, 'paths', userProfile.path);
-  //       // await deleteDoc(oldPathRef);
-  //     }
-  
-  //     setUserProfile({
-  //       ...userProfile,
-  //       name: editName,
-  //       introduction: editIntroduction,
-  //       resume: editResume,
-  //       linkedIn: editLinkedIn,
-  //       birthday: editBirthday,
-  //       interests: editInterests,
-  //       personalityType: editPersonalityType,
-  //       path: editPath,
-  //     });
-  
-  //     alert('Your profile has been updated!');
-  //     setEditMode(false);
-  //   } catch (error) {
-  //     console.error('Error updating profile:', error);
-  //     alert('There was an error updating your profile. Please try again.');
-  //   }
-  // };
   const handleUpdateProfile = async () => {
     if (editPath.trim() === '') {
       alert('Please enter a custom path.');
@@ -171,9 +114,7 @@ const UserProfile = () => {
         const newPathRef = doc(firestore, 'paths', editPath);
         await setDoc(newPathRef, { userId: userId });
   
-        // If you want to remove the old path, you can do so here
-        // const oldPathRef = doc(firestore, 'paths', userProfile.path);
-        // await deleteDoc(oldPathRef);
+
       }
   
       setUserProfile({
@@ -243,6 +184,7 @@ const UserProfile = () => {
                 property1="input-regular"
                 value={userProfile.name}
                 disabled={true}
+                label="Full Name"
                 placeholder="Full Name"
               />
               <TextInput
@@ -297,6 +239,7 @@ const UserProfile = () => {
                 property1="input-regular"
                 value={editName}
                 onChange={(e) => setEditName(e.target.value)}
+                label="Full Name"
                 placeholder="Full Name"
               />
               <TextInput
