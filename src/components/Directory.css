@@ -93,14 +93,17 @@
 /* ... other styles ... */
 
 /* Responsive design for mobile devices */
+/* ... other styles ... */
+
+/* Responsive design for mobile devices */
 @media (max-width: 768px) {
   .user-cards {
-    justify-content: space-around;
+    justify-content: space-between; /* This will ensure there is space between the cards */
   }
 
   .user-card {
-    width: calc(50% - 10px); /* Adjust the width to create space between the cards */
-    margin: 5px; /* Add margin to create space around the cards */
+    width: 48%; /* Slightly less than 50% to account for padding/margins */
+    margin-bottom: 20px; /* Add some space below each card */
   }
 
   /* Adjust the search bar for smaller screens */
@@ -109,4 +112,3 @@
     margin: 10px auto; /* Center the search bar with automatic margins */
   }
 }
-
