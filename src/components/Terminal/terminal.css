@@ -1,15 +1,9 @@
 .terminal {
-    /* Fullscreen dimensions */
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    
+    /* Fullscreen dimensions */    
     height: 100vh; /* full viewport height */
     overflow-y: auto;
     color: #C4C4C4;
-    padding: 35px 45px;
+    padding: 20px 45px;
     font-size: 14px;
     line-height: 1.42;
     font-family: 'IBM Plex Mono', Consolas, Menlo, Monaco, 'Courier New', Courier,

@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { Terminal } from './Terminal/Terminal.tsx';
 import { useTerminal } from './Terminal/hooks.tsx';
 import { ask } from './ChatGPT.tsx';
+import MenuBar from './MenuBar.js';
 
 const initialConversationHistory = [
     { role: 'system', content: 'You are the assistant, acting as an interviewer for the Hong Kong Futurists organization. Your mission is to find the brightest minds from Hong Kong who are studying or have graduated from recognized Californian institutions.' },
@@ -64,6 +65,7 @@ await pushToHistory(
 
   return (
     <div className="CustomTerminal">
+      <MenuBar/>
       <Terminal
         history={history}
         ref={setTerminalRef}
