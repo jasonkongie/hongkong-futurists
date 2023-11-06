@@ -33,10 +33,12 @@ const Directory = () => {
   const handleSearch = async (event) => {
     event.preventDefault();
     if (searchTerm) {
+      // Convert the search term to lowercase
+      const lowerCaseSearchTerm = searchTerm.toLowerCase();
       const q = query(
         collection(firestore, 'users'),
-        where('name', '>=', searchTerm),
-        where('name', '<=', searchTerm + '\uf8ff')
+        where('name_lowercase', '>=', lowerCaseSearchTerm),
+        where('name_lowercase', '<=', lowerCaseSearchTerm + '\uf8ff')
       );
       const querySnapshot = await getDocs(q);
       const filteredUsers = querySnapshot.docs.map((doc) => ({
@@ -46,6 +48,7 @@ const Directory = () => {
       setUsers(filteredUsers);
     }
   };
+  
 
   const getLogo = (college) => {
     switch (college) {

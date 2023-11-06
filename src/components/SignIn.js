@@ -24,6 +24,7 @@ const SignIn = ({ signIn }) => {
           // User not registered, attempt to create a new document
           const profileData = {
             name: user.displayName,
+            name_lowercase: user.displayName.toLowerCase(), // Store the lowercase name
             email: user.email,
             profilePicUrl: user.photoURL,
             college: collegeData[emailDomain], // Use the college name from the JSON data
