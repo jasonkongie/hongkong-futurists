@@ -1,0 +1,62 @@
+.terminal {
+    /* Fullscreen dimensions */    
+    height: 100vh; /* full viewport height */
+    overflow-y: auto;
+    color: #C4C4C4;
+    padding: 20px 45px;
+    font-size: 14px;
+    line-height: 1.42;
+    font-family: 'IBM Plex Mono', Consolas, Menlo, Monaco, 'Courier New', Courier,
+    monospace;
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.terminal__line {
+    line-height: 2;
+    white-space: pre-wrap;
+}
+
+.terminal__prompt {
+    display: flex;
+    align-items: center;
+}
+
+.terminal__prompt__label {
+    flex: 0 0 auto;
+    color: #F9EF00;
+}
+
+.terminal__prompt__input {
+    flex: 1;
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.terminal__prompt__input input {
+    flex: 1;
+    width: 100%;
+    background-color: transparent;
+    color: white;
+    border: 0;
+    outline: none;
+    font-size: 14px;
+    line-height: 1.42;
+    font-family: 'IBM Plex Mono', Consolas, Menlo, Monaco, 'Courier New', Courier,
+    monospace;
+}
+
+/* Added color classes for different roles */
+
+.terminal__system {
+    color: #white; /* System messages in orange */
+}
+
+.terminal__assistant {
+    color: #00FFFF; /* Assistant messages in green */
+}
+
+.terminal__user {
+    color: #white; /* User messages in blue */
+}

@@ -18,14 +18,14 @@ const MenuBar = () => {
       {currentUser ? (
         <Link to="/terminal" className="menu-item">Apply</Link>
       ) : (
-        <Link to="/terminal" className="menu-item">FAQ</Link>
+        <Link to="/FAQ" className="menu-item">FAQ</Link>
       )}
 
       <div className="profile-login-container">
         {currentUser ? (
           <Link to={`/profile/${currentUser.uid}`} className="menu-item">Profile</Link>
         ) : (
-          <SignIn signIn={false} />  // Button will say "Log In with Google"
+          <SignIn signIn={false} /> 
         )}
       </div>
     </div>

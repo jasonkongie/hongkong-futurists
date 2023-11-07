@@ -22,7 +22,7 @@ const initialConversationHistory = [
   ];
   
   
-function CustomTerminal() {
+function FAQ() {
   const {
     history,
     pushToHistory,
@@ -46,6 +46,7 @@ function CustomTerminal() {
     // Set up the observer
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser); // currentUser is User | null
+      // setUserName(currentUser?.displayName || currentUser?.email || '');
     });
 
     // Unsubscribe to the observer when component unmounts
@@ -56,77 +57,23 @@ function CustomTerminal() {
   useEffect(() => {
     resetTerminal();
 
-    //fetch user
-    async function fetchCurrentUserProfile() {
-      try {
-        const currentUser = await UserUtils.getCurrentUser();
-        if (currentUser) {
-          const userProfile = await UserUtils.fetchUserProfile(currentUser.uid);
-          setUserName(userProfile.name); // set the fetched name to state
-        }
-      } catch (error) {
-        console.error('Error fetching user profile:', error);
-      }
-    }
-
-      fetchCurrentUserProfile();
-
-
-    //terminal
     const newConversationId = generateConversationId();
     setConversationId(newConversationId); // Ensure this is being called
 
-      pushToHistory(
-        <>
-          <div><strong>Welcome!</strong> to the Hong Kong Futurist's A.I interview terminal for exclusive members.</div>
-          <div style={{ fontSize: '20px' }}>The <span style={{ color: 'red' }}><strong>most exclusive</strong></span> student business league in California</div>
-          <br />
-          <div>Type "start" to begin:</div>
-        </>
+
+    pushToHistory(
+      <>
+        <div><strong>Welcome!</strong> to the Hong Kong Futurist's FAQ.</div>
+        <div style={{ fontSize: '20px' }}>The <span style={{ color: 'red' }}><strong>most exclusive</strong></span> student business league in California</div>
+        <div>In order to apply as an exclusive member, you must sign up and be logged in.</div>
+        <br/>
+        <div>You may learn more about us by asking HAL 9000 - from 2001: A Space Odyssey</div>
+      </>
       );
   }, [currentUser]);
 
 
   // Function to save or update the conversation in Firebase
-
-  const saveConversationToFirebase = async (newHistory, convId) => {
-    if (!convId) {
-      console.error('Conversation ID is undefined.');
-      return;
-    }
-  
-    const conversationRef = doc(firestore, 'conversations', convId);
-  
-    try {
-      // Create a new array for the history without the serverTimestamp
-      const updatedHistory = newHistory.map(item => ({
-        ...item,
-      }));
-  
-      const docSnapshot = await getDoc(conversationRef);
-      if (docSnapshot.exists()) {
-        await updateDoc(conversationRef, {
-          // Use serverTimestamp here for a top-level field, like 'updatedAt'
-          updatedAt: serverTimestamp(),
-          history: arrayUnion(...updatedHistory),
-        });
-        console.log('Conversation updated successfully');
-      } else {
-        await setDoc(conversationRef, {
-          // Use serverTimestamp here for a top-level field, like 'createdAt'
-          createdAt: serverTimestamp(),
-          history: updatedHistory,
-        });
-        console.log('Conversation created successfully');
-      }
-    } catch (error) {
-      console.error('Error updating conversation: ', error);
-    }
-  };
-  
-
-
-
   const commands = useMemo(() => ({
     'answer': async (input) => {
       const userMessage = input.trim();
@@ -165,4 +112,4 @@ await pushToHistory(
   );
 }
 
-export default CustomTerminal;
+export default FAQ;

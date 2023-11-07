@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import SignIn from './components/SignIn';
 import CustomTerminal from './components/Terminal/CustomTerminal.tsx';
+import FAQ from './components/FAQ/FAQ.tsx';
 import Directory from './components/Directory'; // Import the Directory component
 import UserProfile from './components/UserProfile';
 import AboutUsPage from './components/AboutUsPage';
@@ -16,6 +17,7 @@ function App() {
         <Routes>
         <Route path="/" element={<HomePage />} />
           <Route path="/terminal" element={<CustomTerminal />} />
+          <Route path="/FAQ" element={<FAQ />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/about-us" element={<AboutUsPage />} />
           <Route path="/directory" element={<Directory />} />
