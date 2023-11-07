@@ -9,21 +9,26 @@ const MenuBar = () => {
   const { currentUser } = useContext(AuthContext); // Use the currentUser from AuthContext
 
   return (
-<div className="menu-bar">
-    <Link to="/" className="home-link">Home</Link>
-    <Link to="/about-us" className="menu-item">About Us</Link>
-    <Link to="/directory" className="menu-item">Directory</Link>
-    <Link to="/terminal" className="menu-item">A.I Terminal</Link>
-    <div className="profile-login-container">
+    <div className="menu-bar">
+      <Link to="/" className="home-link">Home</Link>
+      <Link to="/about-us" className="menu-item">About Us</Link>
+      <Link to="/directory" className="menu-item">Directory</Link>
+
+      {/* Conditional rendering based on currentUser */}
+      {currentUser ? (
+        <Link to="/terminal" className="menu-item">Apply</Link>
+      ) : (
+        <Link to="/faq" className="menu-item">FAQ</Link>
+      )}
+
+      <div className="profile-login-container">
         {currentUser ? (
-        <Link to={`/profile/${currentUser.uid}`} className="menu-item">Profile</Link>
+          <Link to={`/profile/${currentUser.uid}`} className="menu-item">Profile</Link>
         ) : (
-        <SignIn signIn={false} />  // Button will say "Log In with Google"
+          <SignIn signIn={false} />  // Button will say "Log In with Google"
         )}
+      </div>
     </div>
-    </div>
-
-
   );
 };
 
