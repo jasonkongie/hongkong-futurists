@@ -1,5 +1,5 @@
 import { doc, getDoc } from 'firebase/firestore';
-import { auth, firestore } from './firebase';
+import { auth, firestore } from '../firebase'; // Adjust this import path if necessary
 
 class UserUtils {
   static async getCurrentUser() {
@@ -14,6 +14,11 @@ class UserUtils {
     } else {
       throw new Error('User profile does not exist.');
     }
+  }
+
+  // Method to check if user is logged in
+  static isUserLoggedIn() {
+    return auth.currentUser != null;
   }
 }
 

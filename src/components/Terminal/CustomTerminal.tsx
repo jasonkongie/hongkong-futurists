@@ -1,10 +1,14 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useContext } from 'react';
 import { Terminal } from './Terminal.tsx';
 import { useTerminal } from './hooks.tsx';
 import { ask } from './ChatGPT.tsx';
 import MenuBar from '../MenuBar.js';
 import { firestore } from '../firebase.js'; // Adjust the path to where your Firebase is initialized
-import { getDoc, doc, updateDoc, arrayUnion, setDoc } from 'firebase/firestore';
+import { getDoc, doc, updateDoc, arrayUnion, setDoc, serverTimestamp} from 'firebase/firestore';
+import UserUtils from '../user/userUtils.js';
+import { AuthContext } from '../AuthContext.js';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../firebase.js'; // Adjust this path to your firebase config file
 
 
 const initialConversationHistory = [
@@ -28,31 +32,79 @@ function CustomTerminal() {
 
   const [conversationHistory, setConversationHistory] = useState(initialConversationHistory);
   const [conversationId, setConversationId] = useState('');
+  // const [userName, setUserName] = useState('');
+  const { currentUser } = useContext(AuthContext);
+  // const [user, setUser] = useState<User | null>(null);
+  // const [userName, setUserName] = useState<string>('FAQ:');
+  const [userName, setUserName] = useState('FAQ');
+  const [user, setUser] = useState(null);
+
+
 
   const generateConversationId = () => {
     return Date.now().toString(36) + Math.random().toString(36).substring(2);
   };
 
+  useEffect(() => {
+    // Set up the observer
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser); // currentUser is User | null
+      // setUserName(currentUser?.displayName || currentUser?.email || '');
+    });
+
+    // Unsubscribe to the observer when component unmounts
+    return unsubscribe;
+  }, []);
+
 
   useEffect(() => {
     resetTerminal();
+
+    //fetch user
+    async function fetchCurrentUserProfile() {
+      try {
+        const currentUser = await UserUtils.getCurrentUser();
+        if (currentUser) {
+          const userProfile = await UserUtils.fetchUserProfile(currentUser.uid);
+          setUserName(userProfile.name); // set the fetched name to state
+        }
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    }
+
+      fetchCurrentUserProfile();
+
 
     //terminal
     const newConversationId = generateConversationId();
     setConversationId(newConversationId); // Ensure this is being called
 
-    pushToHistory(
-      <>
-        <div><strong>Welcome!</strong> to the Hong Kong Futurist's A.I terminal.</div>
-        <div style={{ fontSize: 20 }}>The <span style={{ color: 'red' }}><strong>most exclusive</strong></span> student business league in California</div>
-        <br />
-        <div>Type start to begin: </div>
-      </>
-    );
-  }, []);
+    if (user) {
+      pushToHistory(
+        <>
+          <div><strong>Welcome!</strong> to the Hong Kong Futurist's A.I interview terminal for exclusive members.</div>
+          <div style={{ fontSize: '20px' }}>The <span style={{ color: 'red' }}><strong>most exclusive</strong></span> student business league in California</div>
+          <br />
+          <div>Type "start" to begin:</div>
+        </>
+      );
+    } else {
+      pushToHistory(
+        <>
+          <div><strong>Welcome!</strong> to the Hong Kong Futurist's A.I terminal.</div>
+          <div style={{ fontSize: '20px' }}>The <span style={{ color: 'red' }}><strong>most exclusive</strong></span> student business league in California</div>
+          <div>In order to apply as an exclusive member, you must sign up and be logged in.</div>
+          <br/>
+          <div>You may learn more about us by asking HAL 9000 - from 2001: A Space Odyssey</div>
+        </>
+      );
+    }
+  }, [currentUser]);
 
 
   // Function to save or update the conversation in Firebase
+
   const saveConversationToFirebase = async (newHistory, convId) => {
     if (!convId) {
       console.error('Conversation ID is undefined.');
@@ -60,22 +112,25 @@ function CustomTerminal() {
     }
   
     const conversationRef = doc(firestore, 'conversations', convId);
-    const timestamp = new Date(); // Create a timestamp here
   
     try {
+      // Create a new array for the history without the serverTimestamp
       const updatedHistory = newHistory.map(item => ({
         ...item,
-        timestamp: timestamp, // Use the created timestamp
       }));
   
       const docSnapshot = await getDoc(conversationRef);
       if (docSnapshot.exists()) {
         await updateDoc(conversationRef, {
+          // Use serverTimestamp here for a top-level field, like 'updatedAt'
+          updatedAt: serverTimestamp(),
           history: arrayUnion(...updatedHistory),
         });
         console.log('Conversation updated successfully');
       } else {
         await setDoc(conversationRef, {
+          // Use serverTimestamp here for a top-level field, like 'createdAt'
+          createdAt: serverTimestamp(),
           history: updatedHistory,
         });
         console.log('Conversation created successfully');
@@ -105,7 +160,7 @@ await pushToHistory(
     <div>
         <span className="terminal__user" style={{ marginLeft: 10 }}>You:</span> 
         <strong className="terminal__user">{userMessage}</strong><br />
-        <span className="terminal__assistant" style={{ marginLeft: 10 }}>Assistant:</span> 
+        <span className="terminal__assistant" style={{ marginLeft: 10 }}>HAL 9000 :</span> 
         <strong className="terminal__assistant">{gptResponse}</strong>
     </div>
     );
@@ -119,7 +174,7 @@ await pushToHistory(
       <Terminal
         history={history}
         ref={setTerminalRef}
-        promptLabel={<>You:  </>}
+        promptLabel={<>{userName}: </>}
         commands={commands}
       />
     </div>
