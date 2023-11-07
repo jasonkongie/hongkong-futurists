@@ -3,6 +3,9 @@ import { Terminal } from './Terminal.tsx';
 import { useTerminal } from './hooks.tsx';
 import { ask } from './ChatGPT.tsx';
 import MenuBar from '../MenuBar.js';
+import { firestore } from '../firebase.js'; // Adjust the path to where your Firebase is initialized
+import { getDoc, doc, updateDoc, arrayUnion, setDoc } from 'firebase/firestore';
+
 
 const initialConversationHistory = [
     { role: 'system', content: 'You are the assistant, acting as an interviewer for the Hong Kong Futurists organization. Your mission is to find the brightest minds from Hong Kong who are studying or have graduated from recognized Californian institutions.' },
@@ -24,9 +27,20 @@ function CustomTerminal() {
   } = useTerminal();
 
   const [conversationHistory, setConversationHistory] = useState(initialConversationHistory);
+  const [conversationId, setConversationId] = useState('');
+
+  const generateConversationId = () => {
+    return Date.now().toString(36) + Math.random().toString(36).substring(2);
+  };
+
 
   useEffect(() => {
     resetTerminal();
+
+    //terminal
+    const newConversationId = generateConversationId();
+    setConversationId(newConversationId); // Ensure this is being called
+
     pushToHistory(
       <>
         <div><strong>Welcome!</strong> to the Hong Kong Futurist's A.I terminal.</div>
@@ -37,19 +51,55 @@ function CustomTerminal() {
     );
   }, []);
 
+
+  // Function to save or update the conversation in Firebase
+  const saveConversationToFirebase = async (newHistory, convId) => {
+    if (!convId) {
+      console.error('Conversation ID is undefined.');
+      return;
+    }
+  
+    const conversationRef = doc(firestore, 'conversations', convId);
+    const timestamp = new Date(); // Create a timestamp here
+  
+    try {
+      const updatedHistory = newHistory.map(item => ({
+        ...item,
+        timestamp: timestamp, // Use the created timestamp
+      }));
+  
+      const docSnapshot = await getDoc(conversationRef);
+      if (docSnapshot.exists()) {
+        await updateDoc(conversationRef, {
+          history: arrayUnion(...updatedHistory),
+        });
+        console.log('Conversation updated successfully');
+      } else {
+        await setDoc(conversationRef, {
+          history: updatedHistory,
+        });
+        console.log('Conversation created successfully');
+      }
+    } catch (error) {
+      console.error('Error updating conversation: ', error);
+    }
+  };
+  
+
+
+
   const commands = useMemo(() => ({
-    'start': async () => {
-      await pushToHistory(<div><strong>Starting</strong> the server... <span style={{ color: 'green' }}>Done</span></div>);
-    },
-    'alert': async () => {
-      alert('Hello!');
-      await pushToHistory(<div><strong>Alert</strong><span style={{ color: 'orange', marginLeft: 10 }}><strong>Shown in the browser</strong></span></div>);
-    },
     'answer': async (input) => {
       const userMessage = input.trim();
       const gptResponse = await ask(userMessage, conversationHistory);
 
-      setConversationHistory([...conversationHistory, { role: 'user', content: userMessage }, { role: 'assistant', content: gptResponse }]);
+    //   setConversationHistory([...conversationHistory, { role: 'user', content: userMessage }, { role: 'assistant', content: gptResponse }]);
+        const newHistory = [...conversationHistory, { role: 'user', content: userMessage }, { role: 'assistant', content: gptResponse }];
+        setConversationHistory(newHistory);
+
+      //save conversation history:
+      saveConversationToFirebase(newHistory, conversationId);
+
       
 await pushToHistory(
     <div>
@@ -61,7 +111,7 @@ await pushToHistory(
     );
 
     },
-  }), [pushToHistory, conversationHistory]);
+  }), [pushToHistory, conversationHistory, conversationId]);
 
   return (
     <div className="CustomTerminal">
