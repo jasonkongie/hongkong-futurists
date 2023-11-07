@@ -18,7 +18,7 @@ const MenuBar = () => {
       {currentUser ? (
         <Link to="/terminal" className="menu-item">Apply</Link>
       ) : (
-        <Link to="/faq" className="menu-item">FAQ</Link>
+        <Link to="/terminal" className="menu-item">FAQ</Link>
       )}
 
       <div className="profile-login-container">
