@@ -46,7 +46,6 @@ function FAQ() {
     // Set up the observer
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser); // currentUser is User | null
-      // setUserName(currentUser?.displayName || currentUser?.email || '');
     });
 
     // Unsubscribe to the observer when component unmounts
