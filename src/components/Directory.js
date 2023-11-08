@@ -7,8 +7,8 @@ import search from '../assets/SearchOutline.png'
 import ucBerkeleyLogo from '../assets/UC Berkeley.png';
 import ucdLogo from '../assets/UCD.png';
 import uclaLogo from '../assets/UCLA.png';
-import ucsdLogo from '../assets/UCSD.png';
-import uscLogo from '../assets/USC.svg.png';
+import ucsdLogo from '../assets/UCSD.jpeg';
+import uscLogo from '../assets/usc.png';
 import defaultLogo from '../assets/UCLA.png'; // Make sure to add a default logo image in your assets
 import MenuBar from './MenuBar';
 
